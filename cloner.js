@@ -20,7 +20,7 @@ function cloner(name, element){
         clone.find(".id").remove();
         clone.find(".main") .attr("name", name+"s[" + Counter + "][main]");
 
-        //incrementa pois inseriu mais um elemento
+        //increment because you have inserted another entry
         Counter++;
 
         clone.insertAfter(".clonedInput."+name+":last");
@@ -31,7 +31,7 @@ function cloner(name, element){
         var parent = element.parents("tr");
         var isMain = Number(parent.find(".main").val());
         if(isMain){
-            alert("Você não pode remover o prinipal.");
+            alert("You cannot remove the main one.");
             return false;
         }
         parent.remove();
@@ -39,7 +39,8 @@ function cloner(name, element){
         var elementId = parent.find(".id").val();
 
         if(elementId != null){
-            $.ajax({
+	   // server side only if you follow conventions 
+           $.ajax({
                 url: "/"+name+"s/delete/"+elementId,
                 type: 'POST',
                 success: function() {
@@ -60,15 +61,16 @@ function cloner(name, element){
         
         if (value) {
             
-            // Usuario selecionou "SIM"
-            //coloca todos como "não" exceto o atual
+            // user selected "Yes"
+            // change others to "No" to indicate they are not the
+	    // main one, except this
             $("select.main").not(element).each(function() {
                 $(this).val(0);
             });
 
         } else {
 
-            // Usuario selecionou "NÃO"
+            // user selected "NO"
             element.val(1);
             alert("Selecione 1 como principal.");
         }
